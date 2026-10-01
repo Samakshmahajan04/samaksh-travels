@@ -347,3 +347,4 @@ html.still .showcase-sticky::before{display:none}
 .alt-send .btn{width:auto;flex:1 1 120px}
 .btn:disabled{opacity:.6;cursor:progress}
 .form-note.bad{color:#ff9d8f}
+.opt{color:#6d7681;font-size:13px}

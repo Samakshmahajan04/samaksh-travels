@@ -24,8 +24,8 @@ Never rewrite whole files; use small targeted edits.
 
 ## Status log (update when anything changes)
 - Domain: samakshtravels.com (bought at GoDaddy). DNS: 4 A records (GitHub Pages IPs 185.199.108-111.153) + www CNAME -> samakshmahajan04.github.io. CNAME file in repo. HTTPS enforced (Let's Encrypt, auto-renews).
-- Contact: WhatsApp/call 94199 61983, 2nd 94191 61983, form email samakshgupta48@gmail.com (FormSubmit activated).
+- Contact: WhatsApp/call 94199 61983, 2nd 94191 61983, public/form email inquiry@samakshtravels.com (ImprovMX forwards to owner's 2 Gmails; FormSubmit must be re-activated for this address).
 - SEO: Google Search Console verified (meta tag in index.html — keep it); sitemap.xml + robots.txt; sitemap showed "couldn't fetch" on 1 Oct 2026 (normal, recheck). Google Business Profile: not yet created.
 - Email forwarding (inquiry@/ceo@ -> Gmail): planned via ImprovMX (MX mx1/mx2.improvmx.com prio 10/20, TXT spf `v=spf1 include:spf.improvmx.com ~all`). Status: pending user setup. Add address to contact section when working.
 - Packages: "Coming soon" placeholders. No real photos/testimonials yet.
-- Form enquiries are emailed to samakshgupta48@gmail.com with CC samakshtravels@gmail.com (`CONFIG.emailCc`, FormSubmit `_cc`). Test after any change.
+- Form posts to formsubmit.co/ajax/CONFIG.email; optional customer email gets an auto-confirmation mentioning inquiry@. Personal Gmails are not in the site code.

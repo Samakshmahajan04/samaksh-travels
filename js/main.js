@@ -9,8 +9,7 @@
     phoneDisplay: '+91 94199 61983',
     phone2: '919419161983',
     phone2Display: '+91 94191 61983',
-    email: 'samakshgupta48@gmail.com',
-    emailCc: 'samakshtravels@gmail.com', /* also receives every enquiry */
+    email: 'inquiry@samakshtravels.com', /* public + receives enquiries (ImprovMX forwards to the owner's Gmail accounts) */
     address: 'Opp. 35 BRTF GREF Gate, Dhar Road, Udhampur – 182101, J&K'
   };
 
@@ -186,7 +185,7 @@
   }
   function enquiry() {
     var v = function (n) { return form.elements[n].value.trim(); };
-    return { name: v('name'), lines: ['*New enquiry — Samaksh Travels*', 'Name: ' + v('name'), 'Phone: ' + v('phone'), 'Need: ' + v('service') + (v('service') === 'Holiday package' ? ' (' + v('tier') + ')' : ''),
+    return { name: v('name'), lines: ['*New enquiry — Samaksh Travels*', 'Name: ' + v('name'), 'Phone: ' + v('phone'), (v('email') ? 'Email: ' + v('email') : 'Email: —'), 'Need: ' + v('service') + (v('service') === 'Holiday package' ? ' (' + v('tier') + ')' : ''),
       'From: ' + (v('from') || '—'), 'To: ' + (v('to') || '—'), 'Date: ' + (v('date') || 'flexible'), 'Travellers: ' + (v('pax') || '—')].concat(v('note') ? ['Notes: ' + v('note')] : []) };
   }
   function send(channel) {
@@ -204,7 +203,7 @@
     if (!validate()) { (form.querySelector('[aria-invalid=true]') || form).focus(); return; }
     var data = new FormData(form), q = enquiry();
     data.append('_subject', 'New enquiry — ' + q.name + ' (' + form.elements.service.value + ')');
-    data.append('_cc', CONFIG.emailCc); data.append('_template', 'table'); data.append('_captcha', 'false');
+    data.append('_autoresponse', 'Thank you for contacting Samaksh Travels! We have received your enquiry and will reply shortly. For anything urgent, WhatsApp or call ' + CONFIG.phoneDisplay + ' or write to ' + CONFIG.email + '.'); data.append('_template', 'table'); data.append('_captcha', 'false');
     sendBtn.disabled = true; sendBtn.classList.add('busy'); note.classList.remove('ok', 'bad'); note.textContent = 'Sending…';
     fetch('https://formsubmit.co/ajax/' + CONFIG.email, { method: 'POST', headers: { Accept: 'application/json' }, body: data })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.success === 'false' || j.success === false) throw new Error(j.message || 'failed'); }); })
