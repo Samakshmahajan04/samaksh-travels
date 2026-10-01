@@ -10,6 +10,7 @@
     phone2: '919419161983',
     phone2Display: '+91 94191 61983',
     email: 'samakshgupta48@gmail.com',
+    emailCc: 'samakshtravels@gmail.com', /* also receives every enquiry */
     address: 'Opp. 35 BRTF GREF Gate, Dhar Road, Udhampur – 182101, J&K'
   };
 
@@ -203,7 +204,7 @@
     if (!validate()) { (form.querySelector('[aria-invalid=true]') || form).focus(); return; }
     var data = new FormData(form), q = enquiry();
     data.append('_subject', 'New enquiry — ' + q.name + ' (' + form.elements.service.value + ')');
-    data.append('_template', 'table'); data.append('_captcha', 'false');
+    data.append('_cc', CONFIG.emailCc); data.append('_template', 'table'); data.append('_captcha', 'false');
     sendBtn.disabled = true; sendBtn.classList.add('busy'); note.classList.remove('ok', 'bad'); note.textContent = 'Sending…';
     fetch('https://formsubmit.co/ajax/' + CONFIG.email, { method: 'POST', headers: { Accept: 'application/json' }, body: data })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.success === 'false' || j.success === false) throw new Error(j.message || 'failed'); }); })

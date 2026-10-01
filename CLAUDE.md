@@ -28,3 +28,4 @@ Never rewrite whole files; use small targeted edits.
 - SEO: Google Search Console verified (meta tag in index.html — keep it); sitemap.xml + robots.txt; sitemap showed "couldn't fetch" on 1 Oct 2026 (normal, recheck). Google Business Profile: not yet created.
 - Email forwarding (inquiry@/ceo@ -> Gmail): planned via ImprovMX (MX mx1/mx2.improvmx.com prio 10/20, TXT spf `v=spf1 include:spf.improvmx.com ~all`). Status: pending user setup. Add address to contact section when working.
 - Packages: "Coming soon" placeholders. No real photos/testimonials yet.
+- Form enquiries are emailed to samakshgupta48@gmail.com with CC samakshtravels@gmail.com (`CONFIG.emailCc`, FormSubmit `_cc`). Test after any change.
