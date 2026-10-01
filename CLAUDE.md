@@ -30,3 +30,4 @@ Never rewrite whole files; use small targeted edits.
 - Packages: "Coming soon" placeholders. No real photos/testimonials yet.
 - Form posts to formsubmit.co/ajax/CONFIG.email; optional customer email gets an auto-confirmation mentioning inquiry@. Personal Gmails are not in the site code.
 - WhatsApp: website messages end with '(Sent from samakshtravels.com)'. Auto-replies are set up in the WhatsApp Business app per WHATSAPP-AUTOREPLY.md (manual setup by owner; fully automated YES-flow would need the paid API).
+- UPDATE-GUIDE.pdf/.html: safe-update workflow (branch -> preview -> publish; one change at a time).

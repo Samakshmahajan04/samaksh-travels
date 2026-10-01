@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Samaksh Travels — Safe Update Guide</title>
+<style>
+@page{size:A4;margin:18mm}
+body{font:14px/1.55 -apple-system,Helvetica,Arial,sans-serif;color:#1a1d21;max-width:760px;margin:auto}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:18px;margin:26px 0 8px;border-bottom:2px solid #f2a950;padding-bottom:4px}
+.sub{color:#555;margin:0 0 18px}.box{background:#fff6e8;border-left:4px solid #f2a950;padding:10px 14px;margin:12px 0}
+code,pre{background:#f1f3f5;border-radius:4px;font:12.5px Menlo,monospace}code{padding:1px 5px}pre{padding:10px 12px;white-space:pre-wrap}
+table{border-collapse:collapse;width:100%;margin:8px 0}td,th{border:1px solid #d5d9de;padding:6px 9px;text-align:left;vertical-align:top}th{background:#f1f3f5}
+li{margin:3px 0}
+</style></head><body>
+<h1>Samaksh Travels — Safe Update Guide</h1>
+<p class="sub">How to add new features later without breaking the live site and without wasting tokens · Site: https://samakshtravels.com</p>
+
+<h2>1. The short answer</h2>
+<div class="box"><b>Work on a separate copy (a "branch"), check it, then publish only when happy.</b> Ask for one feature at a time, and give Claude the two project files so it never has to re-read the whole site. Your live site stays untouched until you say "publish".</div>
+
+<h2>2. What you already have</h2>
+<ul>
+<li><b>Project folder:</b> <code>Documents/samaksh-travels</code> on your computer.</li>
+<li><b>Backup + history:</b> github.com/Samakshmahajan04/samaksh-travels — every change is saved; any change can be undone.</li>
+<li><b>Notes for Claude:</b> <code>CLAUDE.md</code> (map of the site) and <code>EDITING-GUIDE.md</code>. Keep these updated.</li>
+<li><b>Live site:</b> updates about one minute after a change is "pushed" to the <code>main</code> branch.</li>
+</ul>
+
+<h2>3. Step-by-step: adding a new feature</h2>
+<ol>
+<li><b>Write the idea first (2 minutes).</b> One short paragraph: what it does, where it appears, what it should look like. Example: "Add a Goa package page with 3 photos and a Book button."</li>
+<li><b>Open Claude Code in the folder</b> <code>Documents/samaksh-travels</code>. Claude reads <code>CLAUDE.md</code> automatically. (Or attach <code>CLAUDE.md</code> and say "read this first".)</li>
+<li><b>Say: "Work on a new branch called feature-name. Don't touch main."</b> A branch is a safe copy. The live site is not affected.</li>
+<li><b>Ask for ONE feature.</b> Name the exact section or file ("in the packages section", "in js/main.js"). Don't say "improve the website".</li>
+<li><b>Preview it locally:</b> ask "start a local preview". Open it and check on laptop and phone size. Give small fix requests ("make the button bigger"), not rewrites.</li>
+<li><b>Test the important things:</b> the enquiry form still sends to your inbox, WhatsApp button works, phone numbers correct, page loads without errors.</li>
+<li><b>Publish:</b> say "merge to main and publish". Wait a minute, hard-refresh the live site (Cmd+Shift+R) and check.</li>
+<li><b>Update the notes:</b> say "update CLAUDE.md with what changed". This keeps the next update cheap.</li>
+</ol>
+
+<h2>4. How to protect the existing website</h2>
+<table>
+<tr><th>Risk</th><th>Protection</th></tr>
+<tr><td>Whole site changes by accident</td><td>Always use a branch; say "only change X, leave everything else exactly as it is".</td></tr>
+<tr><td>A change breaks something</td><td>Everything is saved in GitHub. Say "undo the last change" or "go back to the version from yesterday" and republish.</td></tr>
+<tr><td>Form stops sending</td><td>Never change <code>CONFIG.email</code> or the form code unless needed; if the email address changes, send a new test enquiry and activate it again.</td></tr>
+<tr><td>Google Search stops trusting the site</td><td>Keep the <code>google-site-verification</code> tag, <code>CNAME</code> file, <code>robots.txt</code> and <code>sitemap.xml</code>. Don't delete them.</td></tr>
+<tr><td>Domain stops working</td><td>Never delete the <code>CNAME</code> file or the GoDaddy DNS records.</td></tr>
+</table>
+
+<h2>5. How to use the fewest tokens</h2>
+<ul>
+<li><b>One change per message</b> and name the file/section. Claude then edits a few lines instead of reading everything.</li>
+<li><b>Start with <code>CLAUDE.md</code></b> — it already says which file holds what.</li>
+<li><b>Avoid big open requests</b> like "redesign the site" or "make it better". Ask for a specific result.</li>
+<li><b>Batch small fixes</b> into one message (e.g. three wording changes together).</li>
+<li><b>Ask for short answers</b>: "keep replies short".</li>
+<li><b>Skip 3D re-checks</b> unless you changed 3D files (<code>js/scene.js</code>); screenshots cost tokens.</li>
+<li><b>Plan new pages separately:</b> a new page (e.g. <code>goa.html</code>) is cheaper and safer than rewriting <code>index.html</code>.</li>
+</ul>
+
+<h2>6. Easy changes you can request (small token cost)</h2>
+<table>
+<tr><th>Request</th><th>Where it changes</th></tr>
+<tr><td>New phone / email / address</td><td><code>js/main.js</code> CONFIG + text in <code>index.html</code></td></tr>
+<tr><td>Change wording, FAQ, services</td><td><code>index.html</code></td></tr>
+<tr><td>New destination card</td><td><code>index.html</code> #destinations</td></tr>
+<tr><td>Launch real packages</td><td>#packages (remove "Coming soon"), or new pages</td></tr>
+<tr><td>Real photos</td><td>Add images to an <code>images/</code> folder, link in HTML</td></tr>
+<tr><td>Colours / fonts</td><td>top of <code>css/styles.css</code></td></tr>
+</table>
+<h2>7. Bigger features (plan before asking)</h2>
+<ul>
+<li><b>Photo gallery, reviews, blog:</b> new pages or sections; safe and cheap.</li>
+<li><b>Online payment, customer login, admin panel:</b> need a backend service and cost money. Decide the provider first, build in a branch, and test with fake payments.</li>
+<li><b>Auto WhatsApp flow:</b> needs the paid WhatsApp Business API.</li>
+</ul>
+
+<h2>8. Copy-paste prompts</h2>
+<pre>Read CLAUDE.md. Create a branch "add-goa-page". Add a Goa destination page
+(goa.html) linked from the destinations section. Don't change anything else.
+Keep replies short. Start a local preview when done.</pre>
+<pre>The preview looks good. Merge to main, publish, and update CLAUDE.md.</pre>
+<pre>Something broke on the live site. Undo the last change and publish.</pre>
+
+<h2>9. Checklist before every publish</h2>
+<ul><li>☐ Preview checked on laptop and phone size</li><li>☐ Test enquiry reaches inbox</li><li>☐ WhatsApp button opens chat with your number</li><li>☐ No changes to CNAME, robots.txt, sitemap, verification tag</li><li>☐ CLAUDE.md updated</li></ul>
+</body></html>
