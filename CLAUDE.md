@@ -21,3 +21,10 @@ Never rewrite whole files; use small targeted edits.
 - Keep the page working without 3D (reduced motion / no WebGL): content must stay in the HTML.
 - Test locally: `python3 -m http.server 8765` then open http://localhost:8765/ (add `?debug` to capture the WebGL canvas).
 - Do not add testimonials/statistics unless real. Prices are not shown yet.
+
+## Status log (update when anything changes)
+- Domain: samakshtravels.com (bought at GoDaddy). DNS: 4 A records (GitHub Pages IPs 185.199.108-111.153) + www CNAME -> samakshmahajan04.github.io. CNAME file in repo. HTTPS enforced (Let's Encrypt, auto-renews).
+- Contact: WhatsApp/call 94199 61983, 2nd 94191 61983, form email samakshgupta48@gmail.com (FormSubmit activated).
+- SEO: Google Search Console verified (meta tag in index.html — keep it); sitemap.xml + robots.txt; sitemap showed "couldn't fetch" on 1 Oct 2026 (normal, recheck). Google Business Profile: not yet created.
+- Email forwarding (inquiry@/ceo@ -> Gmail): planned via ImprovMX (MX mx1/mx2.improvmx.com prio 10/20, TXT spf `v=spf1 include:spf.improvmx.com ~all`). Status: pending user setup. Add address to contact section when working.
+- Packages: "Coming soon" placeholders. No real photos/testimonials yet.
