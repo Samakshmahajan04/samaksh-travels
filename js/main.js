@@ -28,7 +28,7 @@
   $$('[data-phone-text]').forEach(function (a) { a.textContent = CONFIG.phoneDisplay; });
   $$('[data-mail]').forEach(function (a) { a.href = 'mailto:' + CONFIG.email; a.textContent = CONFIG.email; });
   $$('[data-wa]').forEach(function (a) {
-    a.href = 'https://wa.me/' + CONFIG.phone + '?text=' + encodeURIComponent('Hi Samaksh Travels, I would like to plan a trip.');
+    a.href = 'https://wa.me/' + CONFIG.phone + '?text=' + encodeURIComponent('Hi Samaksh Travels, I would like to plan a trip. (Sent from samakshtravels.com)');
     a.target = '_blank'; a.rel = 'noopener';
   });
   var yr = $('#yr'); if (yr) yr.textContent = new Date().getFullYear();
@@ -190,7 +190,7 @@
   }
   function send(channel) {
     if (!validate()) { (form.querySelector('[aria-invalid=true]') || form).focus(); return; }
-    var q = enquiry(), text = q.lines.join('\n'), url;
+    var q = enquiry(), text = q.lines.concat(['(Sent from samakshtravels.com)']).join('\n'), url;
     if (channel === 'mail') { window.location.href = 'mailto:' + CONFIG.email + '?subject=' + encodeURIComponent('Trip enquiry — ' + q.name) + '&body=' + encodeURIComponent(text); return; }
     url = 'https://wa.me/' + CONFIG.phone + '?text=' + encodeURIComponent(text);
     if (!window.open(url, '_blank', 'noopener')) window.location.href = url;
