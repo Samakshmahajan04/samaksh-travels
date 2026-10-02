@@ -261,6 +261,22 @@
   form.addEventListener('submit', function (e) { e.preventDefault(); if (form.elements._honey.value || Date.now() - loadedAt < 3000 || Date.now() - lastSent < 30000) return; deliver(); });
   $('#sendWa').addEventListener('click', function () { send('wa'); });
   $('#sendMail').addEventListener('click', function () { send('mail'); });
+  /* branded PDF copy of the visitor's own details (no prices); the PDF library loads only when this is clicked */
+  var dl = $('#dlSummary');
+  if (dl) dl.addEventListener('click', function () {
+    if (!validate()) { (form.querySelector('[aria-invalid=true]') || form).focus(); return; }
+    var v = function (n) { return form.elements[n].value.trim(); }, dt = v('date'), label = dl.textContent;
+    var when = dt ? new Date(dt + 'T00:00:00') : null;
+    dl.disabled = true; dl.textContent = 'Preparing PDF…';
+    window.SamakshPDF.summary({ name: v('name'), phone: v('phone'), email: v('email'), service: form.elements.service.value, tier: form.elements.tier.value,
+      from: v('from'), to: v('to'), date: when && !isNaN(when) ? window.SamakshPDF.today(when) : 'Flexible', pax: v('pax'), note: v('note') })
+      .then(function (doc) {
+        doc.save('Samaksh-Travels-Trip-Summary.pdf');
+        note.classList.remove('bad'); note.classList.add('ok'); note.textContent = 'Your trip summary is downloaded. Send it to us on WhatsApp, or press Send enquiry, and we will reply with a quote.';
+      })
+      .catch(function () { note.classList.remove('ok'); note.classList.add('bad'); note.textContent = 'Sorry, we could not prepare the PDF. Please use Send enquiry or WhatsApp instead.'; })
+      .then(function () { dl.disabled = false; dl.textContent = label; });
+  });
 
   /* ---------- scroll engine: Lenis + one RAF loop ---------- */
   var lenis = null;
