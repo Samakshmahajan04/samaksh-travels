@@ -201,6 +201,7 @@
   var sendBtn = $('#sendBtn');
   function deliver() {
     if (!validate()) { (form.querySelector('[aria-invalid=true]') || form).focus(); return; }
+    lastSent = Date.now();
     var data = new FormData(form), q = enquiry();
     data.append('_subject', 'New enquiry — ' + q.name + ' (' + form.elements.service.value + ')');
     data.append('_autoresponse', 'Thank you for contacting Samaksh Travels! We have received your enquiry and will reply shortly. For anything urgent, WhatsApp or call ' + CONFIG.phoneDisplay + ' or write to ' + CONFIG.email + '.'); data.append('_template', 'table'); data.append('_captcha', 'false');
@@ -217,7 +218,8 @@
       })
       .then(function () { sendBtn.disabled = false; sendBtn.classList.remove('busy'); });
   }
-  form.addEventListener('submit', function (e) { e.preventDefault(); if (form.elements._honey.value) return; deliver(); });
+  var loadedAt = Date.now(), lastSent = 0; /* anti-spam: bots submit instantly or repeatedly */
+  form.addEventListener('submit', function (e) { e.preventDefault(); if (form.elements._honey.value || Date.now() - loadedAt < 3000 || Date.now() - lastSent < 30000) return; deliver(); });
   $('#sendWa').addEventListener('click', function () { send('wa'); });
   $('#sendMail').addEventListener('click', function () { send('mail'); });
 
