@@ -16,7 +16,7 @@ Never rewrite whole files; use small targeted edits.
 | Packages "Coming soon" | `index.html` #packages | remove `.soon` badges and "Coming soon" kickers when launched |
 
 ## Rules / gotchas
-- Form email is activated for samakshgupta48@gmail.com. If the email changes, the new address must be re-activated by sending one test enquiry.
+- Form email is activated for the address in CONFIG.email. If the email changes, the new address must be re-activated by sending one test enquiry.
 - Destination card art is generated SVG (`data-seed`, `data-hue` on `.scenic`); replace with real photos by swapping the `<svg class="scenic">` for an `<img>`.
 - Keep the page working without 3D (reduced motion / no WebGL): content must stay in the HTML.
 - Test locally: `python3 -m http.server 8765` then open http://localhost:8765/ (add `?debug` to capture the WebGL canvas).
@@ -32,4 +32,5 @@ Never rewrite whole files; use small targeted edits.
 - WhatsApp: website messages end with '(Sent from samakshtravels.com)'. Auto-replies are set up in the WhatsApp Business app per WHATSAPP-AUTOREPLY.md (manual setup by owner; fully automated YES-flow would need the paid API).
 - SEO round 1 (live 2 Oct 2026, PR #1): og-image.png/.svg + Open Graph/Twitter tags; richer TravelAgency JSON-LD (areas, 2 phones, services); new page `vaishno-devi-yatra/index.html` (own title/FAQ/JSON-LD, linked from footer); sitemap lists both pages with lastmod. TODO: request indexing in Search Console, create Google Business Profile + collect reviews, more landing pages (Udhampur-Jammu cab, Kashmir packages, Patnitop), real photos. New pages must be added to sitemap.xml.
 - Destination photos: 6 CC-licensed photos from Wikimedia Commons in `images/dest-*.jpg` (credits in `images/credits.json` and the footer; keep credits if photos stay). Replace with own photos when available (same filenames). `js/main.js` generates SVG art only for `svg.scenic`.
+- Security hardening (2 Oct 2026): SRI hashes on the two CDN scripts (three.js r128, lenis 1.1.13; if you change a version, recompute the sha384 hash or the script is blocked); CSP + referrer meta tags on both pages (if you add a new external domain for scripts/fonts/images/fetch, add it to the CSP); `_config.yml` excludes notes/guides (CLAUDE.md, EDITING-GUIDE.md, README.md, WHATSAPP-AUTOREPLY.md, UPDATE-GUIDE.*) from the published site; form has maxlength limits, 3s minimum fill time and 30s resend cooldown on top of the honeypot. Repo is public: never commit personal emails, keys or passwords. Owner TODO: 2FA on GitHub, GoDaddy, Gmail, ImprovMX.
 - UPDATE-GUIDE.pdf/.html: safe-update workflow (branch -> preview -> publish; one change at a time).

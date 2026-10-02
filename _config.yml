@@ -1,0 +1,10 @@
+# Keep internal notes and guides out of the published website
+exclude:
+  - CLAUDE.md
+  - EDITING-GUIDE.md
+  - README.md
+  - WHATSAPP-AUTOREPLY.md
+  - UPDATE-GUIDE.html
+  - UPDATE-GUIDE.pdf
+  - images/credits.json
+  - og-image.svg
