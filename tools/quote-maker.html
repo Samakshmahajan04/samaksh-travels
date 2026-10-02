@@ -25,6 +25,7 @@ h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2rem,5vw
 .totals{display:grid;gap:6px;justify-items:end;margin-top:14px;font-size:17px}
 .totals strong{font-size:22px;color:var(--accent)}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.hint{margin:14px 0 0;color:var(--muted);font-size:14px;max-width:62ch}
 .status{margin-top:14px;min-height:1.4em;color:var(--muted)}
 .status.bad{color:#ff8a7a}.status.ok{color:#8fe0a8}
 .head{display:flex;align-items:center;gap:14px}
@@ -70,7 +71,8 @@ h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2rem,5vw
       <div class="field"><label for="q-gst">GSTIN (print only if you enter one)</label><input id="q-gst"></div>
     </div></section>
 
-    <div class="actions"><button type="submit" class="btn btn-light btn-lg" id="gen"><span>Download quotation PDF</span></button><button type="button" class="btn btn-ghost btn-lg" id="reset">Clear form</button></div>
+    <div class="actions"><button type="button" class="btn btn-light btn-lg" id="sendCust"><span>Send to customer (WhatsApp + Email)</span></button><button type="submit" class="btn btn-ghost btn-lg" id="gen"><span>Download PDF only</span></button><button type="button" class="btn btn-ghost btn-lg" id="reset">Clear form</button></div>
+    <p class="hint">“Send to customer” saves the PDF, then opens the customer’s WhatsApp chat and an email draft with the message ready. Attach the saved PDF in each (paperclip in WhatsApp, attach in email). On a phone with sharing support, you pick WhatsApp or Gmail and the PDF is attached for you.</p>
     <p class="status" id="status" role="status" aria-live="polite"></p>
   </form>
 </div>
@@ -120,22 +122,57 @@ h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2rem,5vw
   $('#addItem').addEventListener('click', function () { addItem(); });
   $('#reset').addEventListener('click', function () { if (confirm('Clear everything in this form?')) reset(); });
   $('#qf').addEventListener('input', recalc);
-  $('#qf').addEventListener('submit', function (e) {
-    e.preventDefault(); var st = $('#status'), btn = $('#gen'); st.className = 'status';
+  function build() {
+    var st = $('#status'); st.className = 'status';
     var items = readItems().filter(function (i) { return i.desc || i.rate; });
-    if (!items.length) { st.className = 'status bad'; st.textContent = 'Add at least one service line with a price.'; return; }
+    if (!$('#q-name').value.trim()) { st.className = 'status bad'; st.textContent = 'Enter the customer name.'; $('#q-name').focus(); return null; }
+    if (!items.length) { st.className = 'status bad'; st.textContent = 'Add at least one service line with a price.'; return null; }
     var sub = items.reduce(function (s, i) { return s + i.qty * i.rate; }, 0), v = $('#q-valid').value, vd = v ? new Date(v + 'T00:00:00') : null;
-    var q = { ref: $('#q-ref').value.trim() || undefined, name: $('#q-name').value.trim(), phone: $('#q-phone').value.trim(), email: $('#q-email').value.trim(),
+    var q = { ref: $('#q-ref').value.trim() || window.SamakshPDF.refNo('Q'), name: $('#q-name').value.trim(), phone: $('#q-phone').value.trim(), email: $('#q-email').value.trim(),
       route: $('#q-route').value.trim(), dates: $('#q-dates').value.trim(), pax: $('#q-pax').value.trim(), valid: vd ? window.SamakshPDF.today(vd) : '',
       items: items.map(function (i) { return { desc: i.desc || 'Service', qty: i.qty, rate: i.rate }; }), discount: Math.min(+$('#q-disc').value || 0, sub),
       inc: $('#q-inc').value.trim(), exc: $('#q-exc').value.trim(), terms: $('#q-terms').value.trim(), note: $('#q-note').value.trim(), by: $('#q-by').value.trim(), gstin: $('#q-gst').value.trim() };
+    q.total = sub - q.discount;
+    q.file = 'Samaksh-Travels-Quotation-' + (q.name.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'Customer') + '.pdf';
+    return q;
+  }
+  function message(q) {
+    var B = window.SamakshPDF.BRAND;
+    return 'Hello ' + q.name + ',\n\nThank you for contacting ' + B.name + '. Please find your quotation ' + q.ref + (q.route ? ' for ' + q.route : '') + ' attached.\n' +
+      'Total: ' + money(q.total) + (q.valid ? ' (valid until ' + q.valid + ')' : '') + '\n\nTo confirm, just reply to this message.\n\n' + B.name + '\n' + B.phone + '\n' + B.web;
+  }
+  function waNumber(p) { var d = String(p || '').replace(/\D/g, '').replace(/^0+/, ''); return d.length === 10 ? '91' + d : d; }
+  function links(q) {
+    var m = message(q), n = waNumber(q.phone);
+    return { wa: n.length >= 11 ? 'https://wa.me/' + n + '?text=' + encodeURIComponent(m) : '',
+      mail: q.email ? 'mailto:' + encodeURIComponent(q.email) + '?subject=' + encodeURIComponent('Your quotation ' + q.ref + ' from Samaksh Travels') + '&body=' + encodeURIComponent(m) : '' };
+  }
+  function run(btn, work) {
+    var q = build(), st = $('#status'); if (!q) return;
     btn.disabled = true; st.textContent = 'Preparing PDF…';
-    window.SamakshPDF.quotation(q).then(function (doc) {
-      var safe = (q.name || 'Customer').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
-      doc.save('Samaksh-Travels-Quotation-' + safe + '.pdf'); st.className = 'status ok'; st.textContent = 'Downloaded. Check the PDF, then send it to the customer on WhatsApp.';
-    }).catch(function () { st.className = 'status bad'; st.textContent = 'Could not prepare the PDF. Check your internet connection and try again.'; })
+    window.SamakshPDF.quotation(q).then(function (doc) { return work(q, doc); })
+      .catch(function (e) { if (e && e.name === 'AbortError') { st.className = 'status'; st.textContent = 'Sharing cancelled.'; return; } st.className = 'status bad'; st.textContent = 'Could not prepare the PDF. Check your internet connection and try again.'; })
       .then(function () { btn.disabled = false; });
+  }
+  $('#qf').addEventListener('submit', function (e) {
+    e.preventDefault();
+    run($('#gen'), function (q, doc) { doc.save(q.file); var st = $('#status'); st.className = 'status ok'; st.textContent = 'Downloaded ' + q.file + '. Check it, then send it to the customer.'; });
   });
+  $('#sendCust').addEventListener('click', function () {
+    run($('#sendCust'), function (q, doc) {
+      var st = $('#status'), file = new File([doc.output('blob')], q.file, { type: 'application/pdf' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        return navigator.share({ files: [file], title: 'Quotation ' + q.ref, text: message(q) }).then(function () { st.className = 'status ok'; st.textContent = 'Shared. Please check the customer received it.'; });
+      }
+      var l = links(q), todo = [];
+      doc.save(q.file);
+      if (l.wa) { window.open(l.wa, '_blank', 'noopener'); todo.push('WhatsApp chat'); }
+      if (l.mail) { setTimeout(function () { window.location.href = l.mail; }, 700); todo.push('email draft'); }
+      st.className = 'status ok';
+      st.textContent = 'PDF saved as ' + q.file + '.' + (todo.length ? ' Opened: ' + todo.join(' and ') + '. Attach the saved PDF in each, then press send.' : ' No valid phone or email entered, so nothing was opened; add them to send.');
+    });
+  });
+
   load();
 })();
 </script>
