@@ -22,6 +22,9 @@ Never rewrite whole files; use small targeted edits.
 - Test locally: `python3 -m http.server 8765` then open http://localhost:8765/ (add `?debug` to capture the WebGL canvas).
 - Do not add testimonials/statistics unless real. Prices are not shown yet.
 
+## Public-repo rule (always follow)
+The GitHub repo is PUBLIC. Never commit personal Gmail/other private emails, passwords, API keys, tokens, bank/ID numbers or customer data (names, phones, quotes). Only the business phones (94199 61983, 94191 61983) and inquiry@samakshtravels.com may appear. Before every merge, scan the diff for these. Owner-only tools live in `tools/` and are excluded from the live site by `_config.yml`; real customer quotes/PDFs must stay on the owner's computer, never in the repo.
+
 ## Status log (update when anything changes)
 - Domain: samakshtravels.com (bought at GoDaddy). DNS: 4 A records (GitHub Pages IPs 185.199.108-111.153) + www CNAME -> samakshmahajan04.github.io. CNAME file in repo. HTTPS enforced (Let's Encrypt, auto-renews).
 - Contact: WhatsApp/call 94199 61983, 2nd 94191 61983, public/form email inquiry@samakshtravels.com (ImprovMX forwards to owner's 2 Gmails; FormSubmit must be re-activated for this address).
