@@ -172,6 +172,45 @@
     });
   });
 
+  /* ---------- city suggestions for "Travelling from" / "Going to" (free typing still allowed) ---------- */
+  var CITIES = ['Udhampur', 'Jammu', 'Katra', 'Srinagar', 'Gulmarg', 'Pahalgam', 'Sonamarg', 'Patnitop', 'Sanasar', 'Leh', 'Ladakh', 'Kargil',
+    'Delhi', 'Chandigarh', 'Amritsar', 'Pathankot', 'Ludhiana', 'Jalandhar', 'Dehradun', 'Haridwar', 'Rishikesh', 'Shimla', 'Manali', 'Dharamshala', 'Dalhousie', 'Mussoorie', 'Nainital',
+    'Agra', 'Jaipur', 'Udaipur', 'Jodhpur', 'Jaisalmer', 'Pushkar', 'Varanasi', 'Lucknow', 'Ayodhya',
+    'Mumbai', 'Pune', 'Goa', 'Ahmedabad', 'Surat', 'Kolkata', 'Darjeeling', 'Gangtok', 'Guwahati', 'Shillong',
+    'Bengaluru', 'Chennai', 'Hyderabad', 'Kochi', 'Munnar', 'Alleppey', 'Thiruvananthapuram', 'Mysuru', 'Ooty', 'Andaman (Port Blair)',
+    'Dubai', 'Abu Dhabi', 'Bangkok', 'Phuket', 'Singapore', 'Bali', 'Kuala Lumpur', 'Maldives', 'Nepal (Kathmandu)', 'Bhutan', 'Sri Lanka', 'London'];
+  $$('[data-cities]').forEach(function (input) {
+    var list = document.createElement('ul'), active = -1, items = [];
+    list.className = 'combo-list'; list.id = input.id + '-list'; list.setAttribute('role', 'listbox'); list.hidden = true;
+    input.parentNode.style.position = 'relative'; input.parentNode.appendChild(list);
+    input.setAttribute('role', 'combobox'); input.setAttribute('aria-autocomplete', 'list'); input.setAttribute('aria-expanded', 'false'); input.setAttribute('aria-controls', list.id);
+    function close() { list.hidden = true; input.setAttribute('aria-expanded', 'false'); active = -1; }
+    function pick(city) { input.value = city; input.dispatchEvent(new Event('input', { bubbles: true })); close(); }
+    function mark(i) {
+      items.forEach(function (li, n) { li.classList.toggle('on', n === i); li.setAttribute('aria-selected', n === i ? 'true' : 'false'); });
+      active = i; if (items[i]) { items[i].scrollIntoView({ block: 'nearest' }); input.setAttribute('aria-activedescendant', items[i].id); }
+    }
+    function open(showAll) {
+      var q = input.value.trim().toLowerCase();
+      var match = CITIES.filter(function (c) { return showAll || !q || c.toLowerCase().indexOf(q) !== -1; });
+      list.innerHTML = ''; items = match.map(function (c, n) {
+        var li = document.createElement('li'); li.setAttribute('role', 'option'); li.id = list.id + '-' + n; li.textContent = c;
+        li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(c); }); list.appendChild(li); return li;
+      });
+      list.hidden = !items.length; input.setAttribute('aria-expanded', items.length ? 'true' : 'false'); active = -1;
+    }
+    input.addEventListener('focus', function () { open(true); });
+    input.addEventListener('click', function () { if (list.hidden) open(true); });
+    input.addEventListener('input', function () { open(false); });
+    input.addEventListener('blur', close);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); if (list.hidden) open(true); mark(Math.min(active + 1, items.length - 1)); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); mark(Math.max(active - 1, 0)); }
+      else if (e.key === 'Enter' && active > -1 && !list.hidden) { e.preventDefault(); pick(items[active].textContent); }
+      else if (e.key === 'Escape') close();
+    });
+  });
+
   /* ---------- enquiry form → WhatsApp ---------- */
   var form = $('#enqForm'), note = $('#formNote');
   var d = $('#f-date'); if (d) d.min = new Date().toISOString().slice(0, 10);
