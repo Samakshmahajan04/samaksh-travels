@@ -35,7 +35,7 @@
 
   /* ---------- scenic SVG art for destination cards ---------- */
   function rng(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
-  $$('.scenic').forEach(function (svg) {
+  $$('svg.scenic').forEach(function (svg) {
     var seed = +svg.dataset.seed || 1, hue = +svg.dataset.hue || 200, r = rng(seed * 977 + 13), W = 400, H = 520, out = '';
     out += '<defs><linearGradient id="sg' + seed + '" x1="0" y1="0" x2="0" y2="1">' +
       '<stop offset="0" stop-color="hsl(' + hue + ',55%,14%)"/><stop offset=".55" stop-color="hsl(' + ((hue + 25) % 360) + ',70%,40%)"/><stop offset="1" stop-color="hsl(' + ((hue + 40) % 360) + ',80%,62%)"/></linearGradient></defs>';
