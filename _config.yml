@@ -9,3 +9,6 @@ exclude:
   - images/credits.json
   - og-image.svg
   - tools
+  - worker
+  - SETUP-PDF-EMAIL.md
+  - node_modules

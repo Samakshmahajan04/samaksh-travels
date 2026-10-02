@@ -1,0 +1,16 @@
+name = "samaksh-mailer"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+# Rate-limit store. Create it once with:  npx wrangler kv namespace create RL
+# then paste the id it prints here (the id is not a secret).
+[[kv_namespaces]]
+binding = "RL"
+id = "be8d10d18c2d4d5396633a8f8504028f"
+
+[vars]
+FROM_EMAIL = "Samaksh Travels <inquiry@samakshtravels.com>"
+REPLY_TO = "inquiry@samakshtravels.com"
+ALLOWED_ORIGINS = "https://samakshtravels.com,https://www.samakshtravels.com"
+# Secret (never put it in this file):  npx wrangler secret put RESEND_API_KEY

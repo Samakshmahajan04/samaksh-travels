@@ -10,7 +10,8 @@
     phone2: '919419161983',
     phone2Display: '+91 94191 61983',
     email: 'inquiry@samakshtravels.com', /* public + receives enquiries (ImprovMX forwards to the owner's Gmail accounts) */
-    address: 'Opp. 35 BRTF GREF Gate, Dhar Road, Udhampur – 182101, J&K'
+    address: 'Opp. 35 BRTF GREF Gate, Dhar Road, Udhampur – 182101, J&K',
+    pdfMailer: 'https://samaksh-mailer.samakshtravels.workers.dev' /* URL of the Cloudflare Worker that emails the customer their PDF summary (see SETUP-PDF-EMAIL.md). Empty = feature off. */
   };
 
   var root = document.documentElement;
@@ -242,12 +243,16 @@
     if (!validate()) { (form.querySelector('[aria-invalid=true]') || form).focus(); return; }
     lastSent = Date.now();
     var data = new FormData(form), q = enquiry();
+    var snap = { name: form.elements.name.value.trim(), email: form.elements.email.value.trim(), phone: form.elements.phone.value.trim(), service: form.elements.service.value, tier: form.elements.tier.value,
+      from: form.elements.from.value.trim(), to: form.elements.to.value.trim(), date: form.elements.date.value, pax: form.elements.pax.value, note: form.elements.note.value.trim(), website: '' };
     data.append('_subject', 'New enquiry — ' + q.name + ' (' + form.elements.service.value + ')');
     data.append('_autoresponse', 'Thank you for contacting Samaksh Travels! We have received your enquiry and will reply shortly. For anything urgent, WhatsApp or call ' + CONFIG.phoneDisplay + ' or write to ' + CONFIG.email + '.'); data.append('_template', 'table'); data.append('_captcha', 'false');
     sendBtn.disabled = true; sendBtn.classList.add('busy'); note.classList.remove('ok', 'bad'); note.textContent = 'Sending…';
     fetch('https://formsubmit.co/ajax/' + CONFIG.email, { method: 'POST', headers: { Accept: 'application/json' }, body: data })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || j.success === 'false' || j.success === false) throw new Error(j.message || 'failed'); }); })
       .then(function () {
+        /* optional: email the customer a branded PDF summary (never blocks or changes the enquiry that already reached us) */
+        if (CONFIG.pdfMailer && snap.email) { try { fetch(CONFIG.pdfMailer, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(snap) }).catch(function () {}); } catch (e) {} }
         form.reset(); form.elements.from.value = 'Udhampur'; form.elements.pax.value = 2;
         note.classList.add('ok'); note.textContent = 'Thank you! Your enquiry has reached us — we’ll contact you shortly on the number you gave.';
       })
