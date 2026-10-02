@@ -8,3 +8,4 @@ exclude:
   - UPDATE-GUIDE.pdf
   - images/credits.json
   - og-image.svg
+  - tools
