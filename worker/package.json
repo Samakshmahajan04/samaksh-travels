@@ -1,0 +1,13 @@
+{
+  "name": "samaksh-mailer",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Emails the branded trip-summary PDF to a customer after they send an enquiry on samakshtravels.com",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node test/run.mjs"
+  },
+  "dependencies": { "jspdf": "2.5.1" },
+  "devDependencies": { "wrangler": "^4.0.0" }
+}

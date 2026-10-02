@@ -110,7 +110,7 @@
       b.kv([['Service', d.service], ['Preference', d.tier], ['Travelling from', d.from], ['Going to', d.to], ['Travel date', d.date], ['Travellers', d.pax]]);
       if (d.note) { b.h2('Your notes'); b.box(d.note); }
       b.h2('What happens next');
-      b.list(['Send this summary to us on WhatsApp ' + BRAND.phone + ', or press Send enquiry on ' + BRAND.web + '. Your request reaches us only when you send it.',
+      b.list([d.sent ? 'We have received your enquiry and will reply shortly on the phone number or email you gave us.' : 'Send this summary to us on WhatsApp ' + BRAND.phone + ', or press Send enquiry on ' + BRAND.web + '. Your request reaches us only when you send it.',
         'We reply with a clear written quote that lists exactly what is included and what is not.',
         'Once you confirm and pay, we book every ticket, stay and vehicle and send your full itinerary.'], true);
       b.para('This document records the details you entered. It is not a booking confirmation or a price quotation. Prices, availability and terms are confirmed by Samaksh Travels in writing.', { size: 8.5, color: C.mute });
