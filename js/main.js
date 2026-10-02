@@ -11,7 +11,7 @@
     phone2Display: '+91 94191 61983',
     email: 'inquiry@samakshtravels.com', /* public + receives enquiries (ImprovMX forwards to the owner's Gmail accounts) */
     address: 'Opp. 35 BRTF GREF Gate, Dhar Road, Udhampur – 182101, J&K',
-    pdfMailer: '' /* URL of the Cloudflare Worker that emails the customer their PDF summary (see SETUP-PDF-EMAIL.md). Empty = feature off. */
+    pdfMailer: 'https://samaksh-mailer.samakshtravels.workers.dev' /* URL of the Cloudflare Worker that emails the customer their PDF summary (see SETUP-PDF-EMAIL.md). Empty = feature off. */
   };
 
   var root = document.documentElement;

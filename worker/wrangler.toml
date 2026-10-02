@@ -7,7 +7,7 @@ workers_dev = true
 # then paste the id it prints here (the id is not a secret).
 [[kv_namespaces]]
 binding = "RL"
-id = "PASTE_KV_NAMESPACE_ID_HERE"
+id = "be8d10d18c2d4d5396633a8f8504028f"
 
 [vars]
 FROM_EMAIL = "Samaksh Travels <inquiry@samakshtravels.com>"
