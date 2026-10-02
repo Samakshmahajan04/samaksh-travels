@@ -30,4 +30,5 @@ Never rewrite whole files; use small targeted edits.
 - Packages: "Coming soon" placeholders. No real photos/testimonials yet.
 - Form posts to formsubmit.co/ajax/CONFIG.email; optional customer email gets an auto-confirmation mentioning inquiry@. Personal Gmails are not in the site code.
 - WhatsApp: website messages end with '(Sent from samakshtravels.com)'. Auto-replies are set up in the WhatsApp Business app per WHATSAPP-AUTOREPLY.md (manual setup by owner; fully automated YES-flow would need the paid API).
+- SEO round 1 (live 2 Oct 2026, PR #1): og-image.png/.svg + Open Graph/Twitter tags; richer TravelAgency JSON-LD (areas, 2 phones, services); new page `vaishno-devi-yatra/index.html` (own title/FAQ/JSON-LD, linked from footer); sitemap lists both pages with lastmod. TODO: request indexing in Search Console, create Google Business Profile + collect reviews, more landing pages (Udhampur-Jammu cab, Kashmir packages, Patnitop), real photos. New pages must be added to sitemap.xml.
 - UPDATE-GUIDE.pdf/.html: safe-update workflow (branch -> preview -> publish; one change at a time).
