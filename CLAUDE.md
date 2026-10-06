@@ -21,6 +21,7 @@ Never rewrite whole files; use small targeted edits.
 - Keep the page working without 3D (reduced motion / no WebGL): content must stay in the HTML.
 - If the live site does not update ~2 min after a push (no new "pages build and deployment" in `gh run list`), trigger it: `gh api -X POST repos/Samakshmahajan04/samaksh-travels/pages/builds` (happened 7 Oct 2026).
 - Test locally: `python3 -m http.server 8765` then open http://localhost:8765/ (add `?debug` to capture the WebGL canvas).
+- **Keep in sync on EVERY change (owner request):** `llms.txt` (AI summary: contacts, services, areas, pages, booking), the home JSON-LD `@graph` (TravelAgency details + FAQPage mirroring the visible FAQ), and `sitemap.xml` (new pages + lastmod). Update them in the same commit as the change.
 - Do not add testimonials/statistics unless real. Prices are not shown yet.
 
 ## Public-repo rule (always follow)
