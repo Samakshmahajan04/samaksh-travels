@@ -19,6 +19,7 @@ Never rewrite whole files; use small targeted edits.
 - Form email is activated for the address in CONFIG.email. If the email changes, the new address must be re-activated by sending one test enquiry.
 - Destination card art is generated SVG (`data-seed`, `data-hue` on `.scenic`); replace with real photos by swapping the `<svg class="scenic">` for an `<img>`.
 - Keep the page working without 3D (reduced motion / no WebGL): content must stay in the HTML.
+- If the live site does not update ~2 min after a push (no new "pages build and deployment" in `gh run list`), trigger it: `gh api -X POST repos/Samakshmahajan04/samaksh-travels/pages/builds` (happened 7 Oct 2026).
 - Test locally: `python3 -m http.server 8765` then open http://localhost:8765/ (add `?debug` to capture the WebGL canvas).
 - Do not add testimonials/statistics unless real. Prices are not shown yet.
 
